@@ -64,6 +64,7 @@ public class NoInsertAtEndIndexedDropController extends SimpleDropController {
 	int xCoord = 50;
 	int yCoord = 200;
 
+	public Image newDroppedElem;
 	public NoInsertAtEndIndexedDropController(Widget dropTarget,
 			EntryPoint newEntrypoint) {
 		super(dropTarget);
@@ -148,6 +149,15 @@ public class NoInsertAtEndIndexedDropController extends SimpleDropController {
 					  xCoord, yCoord);
 			GWTjsplumbSample.WidgetMap.put(ElementCount, widget
 					  .getElement().getId());
+			
+			
+			newDroppedElem = new Image();
+			newDroppedElem.getElement().setId("dragged" + ElementCount);
+			newDroppedElem.getElement().setPropertyBoolean("draggable",
+			 false);
+			newDroppedElem.addClickHandler(GWTjsplumbSample.clickHandler);
+			newDroppedElem.setResource(DropPropertyImage);
+			RootPanel.get("draggablePanel").add(widget);
 
 		}
 		// setMouseEvent(null);
