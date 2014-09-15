@@ -76,95 +76,80 @@ public class NoInsertAtEndIndexedDropController extends SimpleDropController {
 	@Override
 	public void onDrop(DragContext context) {
 
-		xCoord += 100;
+		xCoord += 100;		
+		String thisId = null;
 		for (Widget widget : context.selectedWidgets) {
-
-			/*
-			 * if (widget != null) {
-			 * GWTjsplumbSample.myecho("wdgettruecameinside"); Image
-			 * newDroppedElem = new Image();
-			 * newDroppedElem.getElement().setId("dragged" + ElementCount);
-			 * newDroppedElem.getElement().setPropertyBoolean("draggable",
-			 * false);
-			 * newDroppedElem.addClickHandler(GWTjsplumbSample.clickHandler);
-			 * GWTjsplumbSample.myecho("newImageCreated");
-			 * widget.removeStyleName
-			 * ("gwt-Image dragdrop-draggable dragdrop-handle dragdrop-dragging"
-			 * );
-			 * widget.addStyleName("gwt-Image dragdrop-draggable dragdrop-handle"
-			 * ); GWTjsplumbSample.myecho("stylesChanges");
-			 * RootPanel.get("draggablePanel").add(widget);
-			 * GWTjsplumbSample.myecho
-			 * ("panelswere taken and not niull"+RootPanel
-			 * .get("droppablePanel").getWidgetCount()); if
-			 * (RootPanel.get("draggablePanel") != null &&
-			 * RootPanel.get("droppablePanel") != null) {
-			 * GWTjsplumbSample.myecho
-			 * ("panelswere taken and not niull"+RootPanel
-			 * .get("droppablePanel").getWidgetCount());
-			 * RootPanel.get("draggablePanel").add(widget);
-			 * RootPanel.get("droppablePanel").remove(widget); String thisId =
-			 * widget.getElement().getId(); GWTjsplumbSample.myecho(thisId); if
-			 * (thisId.equalsIgnoreCase("callMediator")) {
-			 * newDroppedElem.setResource(DropCallImage); } if
-			 * (thisId.equalsIgnoreCase("callTemplateMediator")) {
-			 * newDroppedElem.setResource(DropCallTempImage); } if
-			 * (thisId.equalsIgnoreCase("logMediator")) {
-			 * newDroppedElem.setResource(DropLogImage); } if
-			 * (thisId.equalsIgnoreCase("dropMediator")) {
-			 * newDroppedElem.setResource(DropDropImage); } if
-			 * (thisId.equalsIgnoreCase("storeMediator")) {
-			 * newDroppedElem.setResource(DropStoreImage); } if
-			 * (thisId.equalsIgnoreCase("sendMediator")) {
-			 * newDroppedElem.setResource(DropSendImage); } if
-			 * (thisId.equalsIgnoreCase("cloneMediator")) {
-			 * newDroppedElem.setResource(DropCloneImage); } if
-			 * (thisId.equalsIgnoreCase("throttleMediator")) {
-			 * newDroppedElem.setResource(DropThrottleImage); } if
-			 * (thisId.equalsIgnoreCase("respondMediator")) {
-			 * newDroppedElem.setResource(DropRespondImage); } if
-			 * (thisId.equalsIgnoreCase("propertyMediator")) {
-			 * newDroppedElem.setResource(DropPropertyImage); } if
-			 * (thisId.equalsIgnoreCase("paylfacMediator")) {
-			 * newDroppedElem.setResource(DropPayloadFactoryImage); }
-			 * GWTjsplumbSample.WidgetMap.put(ElementCount, newDroppedElem
-			 * .getElement().getId());
-			 * 
-			 * RootPanel.get("background").add(newDroppedElem);
-			 * RootPanel.get("background").setWidgetPosition( newDroppedElem,
-			 * xCoord, yCoord);
-			 * GWTjsplumbSample.myecho("Added element successfully!!");
-			 * newDroppedElem = null;
-			 * RootPanel.get("background").getAbsoluteLeft(); } else{
-			 * GWTjsplumbSample.myecho("panelswere null hence didnt go in"); } }
-			 * else { LOGGER.log(Level.INFO,
-			 * "no widget selected, widget is null");
-			 * GWTjsplumbSample.myecho("widget was null"); }
-			 */
+			
+			if (widget != null) {
+			    thisId = widget.getElement().getId();
+				
+				Image newDroppedElem = new Image();
+				newDroppedElem.getElement().setId("dragged" + ElementCount);
+				newDroppedElem.getElement().setPropertyBoolean("draggable",
+						false);
+				newDroppedElem.addClickHandler(GWTjsplumbSample.clickHandler);	
+				if (RootPanel.get("draggablePanel") != null
+						&& RootPanel.get("droppablePanel") != null) {
+					
+					if (thisId.equalsIgnoreCase("callMediator")) {
+						newDroppedElem.setResource(DropCallImage);
+					}
+					if (thisId.equalsIgnoreCase("callTemplateMediator")) {
+						newDroppedElem.setResource(DropCallTempImage);
+					}
+					if (thisId.equalsIgnoreCase("logMediator")) {
+						newDroppedElem.setResource(DropLogImage);
+					}
+					if (thisId.equalsIgnoreCase("dropMediator")) {
+						newDroppedElem.setResource(DropDropImage);
+					}
+					if (thisId.equalsIgnoreCase("storeMediator")) {
+						newDroppedElem.setResource(DropStoreImage);
+					}
+					if (thisId.equalsIgnoreCase("sendMediator")) {
+						newDroppedElem.setResource(DropSendImage);
+					}
+					if (thisId.equalsIgnoreCase("cloneMediator")) {
+						newDroppedElem.setResource(DropCloneImage);
+					}
+					if (thisId.equalsIgnoreCase("throttleMediator")) {
+						newDroppedElem.setResource(DropThrottleImage);
+					}
+					if (thisId.equalsIgnoreCase("respondMediator")) {
+						newDroppedElem.setResource(DropRespondImage);
+					}
+					if (thisId.equalsIgnoreCase("propertyMediator")) {
+						newDroppedElem.setResource(DropPropertyImage);
+					}
+					if (thisId.equalsIgnoreCase("paylfacMediator")) {
+						newDroppedElem.setResource(DropPayloadFactoryImage);
+					}					
+					RootPanel.get("draggablePanel").add(newDroppedElem);					
+					newDroppedElem = null;
+					RootPanel.get("background").getAbsoluteLeft();
+				} else {
+					
+				}
+			} else {
+				LOGGER.log(Level.INFO, "no widget selected, widget is null");
+				//GWTjsplumbSample.myecho("widget was null");
+			}
+			String newDroppedElemId = "dragged" + thisId + ElementCount;
+			
 			widget.removeStyleName("gwt-Image dragdrop-draggable dragdrop-handle dragdrop-dragging");
 			widget.addStyleName("gwt-Image dragdrop-draggable dragdrop-handle");
-			String thisId = widget.getElement().getId();
-			widget.getElement().setId("dragged" + thisId + ElementCount);
+			
+			widget.getElement().setId(newDroppedElemId);
 			RootPanel.get("background").setWidgetPosition( widget,
 					  xCoord, yCoord);
 			GWTjsplumbSample.WidgetMap.put(ElementCount, widget
 					  .getElement().getId());
 			
-			
-			newDroppedElem = new Image();
-			newDroppedElem.getElement().setId("dragged" + ElementCount);
-			newDroppedElem.getElement().setPropertyBoolean("draggable",
-			 false);
-			newDroppedElem.addClickHandler(GWTjsplumbSample.clickHandler);
-			newDroppedElem.setResource(DropPropertyImage);
-			RootPanel.get("draggablePanel").add(widget);
-
 		}
-		// setMouseEvent(null);
-
+		
 		int PrevCount = ElementCount - 1;
-		String prevElem = "dragged" + PrevCount;
-		String currElem = "dragged" + ElementCount;
+		String prevElem = GWTjsplumbSample.WidgetMap.get(PrevCount);
+		String currElem = GWTjsplumbSample.WidgetMap.get(ElementCount);
 		GWTjsplumbSample.gwtjsPlumbDemo(prevElem, currElem, ElementCount);
 		ElementCount++;
 		super.onDrop(context);
