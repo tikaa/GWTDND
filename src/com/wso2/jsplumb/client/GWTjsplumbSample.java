@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.wso2.jsplumb.client.controllers.CustomImageElementDropControler;
 import com.wso2.jsplumb.client.controllers.CustomImageElementDragController;
 import com.wso2.jsplumb.client.extendedpanels.ExtendedHorizontalPanel;
-import com.wso2.jsplumb.client.injectors.ScriptInject;
+import com.wso2.jsplumb.client.injectors.ScriptInjectorHelper;
 
 public class GWTjsplumbSample implements EntryPoint {
 
@@ -98,7 +98,7 @@ public class GWTjsplumbSample implements EntryPoint {
 		dragController.makeDraggable(sendImage);
 		dragController.makeDraggable(storeImage);
 
-		ScriptInject.injectScript();
+		ScriptInjectorHelper.injectScript();
 
 		gwtjsPlumbDemo("you", "me", 0);
 

@@ -3,7 +3,7 @@ package com.wso2.jsplumb.client;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Image;
-import com.wso2.jsplumb.client.injectors.jsClientBundle;
+import com.wso2.jsplumb.client.injectors.JsClientBundle;
 
 public class MediatorCreator {
 
@@ -13,28 +13,28 @@ public class MediatorCreator {
 
 		switch (mediator) {
 		case LOG:
-			image = jsClientBundle.INSTANCE.LogImage();
+			image = JsClientBundle.INSTANCE.LogImage();
 			break;
 
 		case CALL:
-			image = jsClientBundle.INSTANCE.CallImage();
+			image = JsClientBundle.INSTANCE.CallImage();
 			break;
 
 		case PROPERTY:
-			image = jsClientBundle.INSTANCE.PropertyImage();
+			image = JsClientBundle.INSTANCE.PropertyImage();
 			break;
 
 		case SEND:
-			image = jsClientBundle.INSTANCE.SendImage();
+			image = JsClientBundle.INSTANCE.SendImage();
 			break;
 
 		case DROP:
-			image = jsClientBundle.INSTANCE.DropImage();
+			image = JsClientBundle.INSTANCE.DropImage();
 			break;
 
 		default:
 			// Need to set a error icon for this
-			image = jsClientBundle.INSTANCE.LogImage();
+			image = JsClientBundle.INSTANCE.LogImage();
 			break;
 
 		}

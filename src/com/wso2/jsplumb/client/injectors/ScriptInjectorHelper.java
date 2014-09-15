@@ -2,20 +2,20 @@ package com.wso2.jsplumb.client.injectors;
 
 import com.google.gwt.core.client.ScriptInjector;
 
-public class ScriptInject {
+public class ScriptInjectorHelper {
 	
 	  public static void injectScript() {
 	        ScriptInjector
-	                .fromString(jsClientBundle.INSTANCE.jquerysource().getText())
+	                .fromString(JsClientBundle.INSTANCE.jquerysource().getText())
 	                .setWindow(ScriptInjector.TOP_WINDOW).inject();
 	        ScriptInjector
-	                .fromString(jsClientBundle.INSTANCE.jqueryuimin().getText())
+	                .fromString(JsClientBundle.INSTANCE.jqueryuimin().getText())
 	                .setWindow(ScriptInjector.TOP_WINDOW).inject();
 	        ScriptInjector
-	                .fromString(jsClientBundle.INSTANCE.jsplumbsource().getText())
+	                .fromString(JsClientBundle.INSTANCE.jsplumbsource().getText())
 	                .setWindow(ScriptInjector.TOP_WINDOW).inject();
 	        ScriptInjector
-	                .fromString(jsClientBundle.INSTANCE.gwtresource().getText())
+	                .fromString(JsClientBundle.INSTANCE.gwtresource().getText())
 	                .setWindow(ScriptInjector.TOP_WINDOW).inject();
 	       
 
