@@ -1,55 +1,59 @@
 package com.wso2.jsplumb.client.controllers;
 
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-//import com.google.gwt.core.client.GWT;
-//import com.google.gwt.core.client.ScriptInjector;
-//import com.google.gwt.dom.client.Style.Unit;
-//import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.ImageResource;
-//import com.google.gwt.resources.client.TextResource;
-//import com.google.gwt.resources.client.ClientBundle.Source;
-//import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.wso2.jsplumb.client.GWTjsplumbSample;
-import com.wso2.jsplumb.client.injectors.JsClientBundle;;
+import com.wso2.jsplumb.client.Mediator;
+import com.wso2.jsplumb.client.MediatorCreator;
 
 public class CustomImageElementDropControler extends SimpleDropController {
 
-	private final static Logger LOGGER = Logger.getLogger(NoInsertAtEndIndexedDropController.class
+	private static final String DROPPABLE_PANEL = "droppablePanel"; //$NON-NLS-1$
+	private static final String DRAGGABLE_PANEL = "draggablePanel"; //$NON-NLS-1$
+	private static final String PAYLFAC_MEDIATOR = "paylfacMediator"; //$NON-NLS-1$
+	private static final String PROPERTY_MEDIATOR = "propertyMediator"; //$NON-NLS-1$
+	private static final String RESPOND_MEDIATOR = "respondMediator"; //$NON-NLS-1$
+	private static final String THROTTLE_MEDIATOR = "throttleMediator"; //$NON-NLS-1$
+	private static final String CLONE_MEDIATOR = "cloneMediator"; //$NON-NLS-1$
+	private static final String SEND_MEDIATOR = "sendMediator"; //$NON-NLS-1$
+	private static final String STORE_MEDIATOR = "storeMediator"; //$NON-NLS-1$
+	private static final String DROP_MEDIATOR = "dropMediator"; //$NON-NLS-1$
+	private static final String LOG_MEDIATOR = "logMediator"; //$NON-NLS-1$
+	private static final String CALL_TEMPLATE_MEDIATOR = "callTemplateMediator"; //$NON-NLS-1$
+	private static final String CALL_MEDIATOR = "callMediator"; //$NON-NLS-1$
+	private static final String BACKGROUND = "background"; //$NON-NLS-1$
+	private static final String DRAGGED = "dragged"; //$NON-NLS-1$
+
+	private static final String DROPPABLE_IMAGE_STYLE = "gwt-Image dragdrop-draggable dragdrop-handle"; //$NON-NLS-1$
+	private static final String DROPPING_IMAGE_STYLE = "gwt-Image dragdrop-draggable dragdrop-handle dragdrop-dragging"; //$NON-NLS-1$
+
+	private final static Logger LOGGER = Logger.getLogger(CustomImageElementDropControler.class
 			.getName());
-
-	
-
-	static MouseMoveEvent mouseEvent;
-	static int mouseX = 0;
-	static int mouseY = 0;
-	
-
-	private ImageResource DropCallImage = JsClientBundle.INSTANCE.CallImage();
-	private ImageResource DropCallTempImage = JsClientBundle.INSTANCE.CalleTempImage();
-	private ImageResource DropLogImage = JsClientBundle.INSTANCE.LogImage();
-	private ImageResource DropDropImage = JsClientBundle.INSTANCE.DropImage();
-	private ImageResource DropStoreImage = JsClientBundle.INSTANCE.StoreImage();
-	private ImageResource DropThrottleImage = JsClientBundle.INSTANCE.ThrottleImage();
-	private ImageResource DropSendImage = JsClientBundle.INSTANCE.SendImage();
-	private ImageResource DropPayloadFactoryImage = JsClientBundle.INSTANCE.PayloadFactoryImage();
-	private ImageResource DropRespondImage = JsClientBundle.INSTANCE.RespondImage();
-	private ImageResource DropCloneImage = JsClientBundle.INSTANCE.CloneImage();
-	private ImageResource DropPropertyImage = JsClientBundle.INSTANCE.PropertyImage();
 
 	int ElementCount = 1;
 	int xCoord = 50;
-	int yCoord = 200;
+	int yCoord = 100;
 
 	public Image newDroppedElem;
+	static Widget selectedWidget = new Widget();
+	public static HashMap<Integer, String> widgetMap = new HashMap<>();
+
+	static String deletingWidgetId = null;
+	static String widgetbeforeDeletingWidget = null;
+	static String widgetafterDeletingWdget = null;
 
 	public CustomImageElementDropControler(Widget dropTarget, EntryPoint newEntrypoint) {
 		super(dropTarget);
@@ -58,80 +62,91 @@ public class CustomImageElementDropControler extends SimpleDropController {
 	@Override
 	public void onDrop(DragContext context) {
 
-		xCoord += 100;
+		
 		String thisId = null;
 		for (Widget widget : context.selectedWidgets) {
 
 			if (widget != null) {
-				
-				thisId = widget.getElement().getId();
-				Image newDroppedElem = new Image();
-				newDroppedElem.getElement().setId("dragged" + ElementCount);
-				newDroppedElem.getElement().setPropertyBoolean("draggable", false);
-				newDroppedElem.addClickHandler(GWTjsplumbSample.clickHandler);
-				widget.removeStyleName("gwt-Image dragdrop-draggable dragdrop-handle dragdrop-dragging");
-				widget.addStyleName("gwt-Image dragdrop-draggable dragdrop-handle");
-				RootPanel.get("draggablePanel").add(widget);
-				RootPanel.get("droppablePanel").remove(widget);
-				
-				if (RootPanel.get("draggablePanel") != null && RootPanel.get("droppablePanel") != null) {
 
-					if (thisId.equalsIgnoreCase("callMediator")) {
-						newDroppedElem.setResource(DropCallImage);
+				thisId = widget.getElement().getId();
+				String newDroppedElemId = DRAGGED + thisId + ElementCount;
+
+				widget.removeStyleName(DROPPING_IMAGE_STYLE);
+				widget.addStyleName(DROPPABLE_IMAGE_STYLE);
+				RootPanel.get(DRAGGABLE_PANEL).add(widget);
+				RootPanel.get(DROPPABLE_PANEL).remove(widget);
+
+				if (RootPanel.get(DRAGGABLE_PANEL) != null
+						&& RootPanel.get(DROPPABLE_PANEL) != null) {
+
+					if (thisId.equalsIgnoreCase(CALL_MEDIATOR)) {
+						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.CALL,
+								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase("callTemplateMediator")) {
-						newDroppedElem.setResource(DropCallTempImage);
+					if (thisId.equalsIgnoreCase(CALL_TEMPLATE_MEDIATOR)) {
+						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.CALLTEMPLATE,
+								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase("logMediator")) {
-						newDroppedElem.setResource(DropLogImage);
+					if (thisId.equalsIgnoreCase(LOG_MEDIATOR)) {
+						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.LOG,
+								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase("dropMediator")) {
-						newDroppedElem.setResource(DropDropImage);
+					if (thisId.equalsIgnoreCase(DROP_MEDIATOR)) {
+						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.DROP,
+								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase("storeMediator")) {
-						newDroppedElem.setResource(DropStoreImage);
+					if (thisId.equalsIgnoreCase(STORE_MEDIATOR)) {
+						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.STORE,
+								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase("sendMediator")) {
-						newDroppedElem.setResource(DropSendImage);
+					if (thisId.equalsIgnoreCase(SEND_MEDIATOR)) {
+						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.SEND,
+								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase("cloneMediator")) {
-						newDroppedElem.setResource(DropCloneImage);
+					if (thisId.equalsIgnoreCase(CLONE_MEDIATOR)) {
+						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.CLONE,
+								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase("throttleMediator")) {
-						newDroppedElem.setResource(DropThrottleImage);
+					if (thisId.equalsIgnoreCase(THROTTLE_MEDIATOR)) {
+						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.THROTTLE,
+								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase("respondMediator")) {
-						newDroppedElem.setResource(DropRespondImage);
+					if (thisId.equalsIgnoreCase(RESPOND_MEDIATOR)) {
+						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.RESPOND,
+								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase("propertyMediator")) {
-						newDroppedElem.setResource(DropPropertyImage);
+					if (thisId.equalsIgnoreCase(PROPERTY_MEDIATOR)) {
+						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.PROPERTY,
+								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase("paylfacMediator")) {
-						newDroppedElem.setResource(DropPayloadFactoryImage);
+					if (thisId.equalsIgnoreCase(PAYLFAC_MEDIATOR)) {
+						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.PAYLOADFACTORY,
+								clickHandler);
 					}
-					String newDroppedElemId = "dragged" + thisId + ElementCount;
-					newDroppedElem.getElement().setId(newDroppedElemId);					
-					GWTjsplumbSample.WidgetMap.put(ElementCount, newDroppedElem.getElement()
-							.getId());
-					RootPanel.get("droppablePanel").add(newDroppedElem);
-					RootPanel.get("droppablePanel").setWidgetPosition(newDroppedElem, xCoord, yCoord);
+					newDroppedElem.getElement().setId(newDroppedElemId);
+					RootPanel.get(DROPPABLE_PANEL).add(newDroppedElem);
+					RootPanel.get(DROPPABLE_PANEL)
+							.setWidgetPosition(newDroppedElem, xCoord, yCoord);
+					widgetMap.put(ElementCount, newDroppedElem.getElement().getId());
 					newDroppedElem = null;
-					RootPanel.get("background").getAbsoluteLeft();
+					RootPanel.get(BACKGROUND).getAbsoluteLeft();
 				} else {
-					LOGGER.log(Level.INFO, "the draggable and droppable panels returned null");
+					LOGGER.log(Level.INFO, Messages.getString("CustomImageElementDropControler.0")); //$NON-NLS-1$
 				}
 			} else {
-				LOGGER.log(Level.INFO, "no widget selected, widget is null");
-				
+				LOGGER.log(Level.INFO, Messages.getString("CustomImageElementDropControler.18")); //$NON-NLS-1$
 			}
 
 		}
 
 		int PrevCount = ElementCount - 1;
-		String prevElem = GWTjsplumbSample.WidgetMap.get(PrevCount);
-		String currElem = GWTjsplumbSample.WidgetMap.get(ElementCount);
+		String prevElem = widgetMap.get(PrevCount);
+		String currElem = widgetMap.get(ElementCount);
 		GWTjsplumbSample.gwtjsPlumbDemo(prevElem, currElem, ElementCount);
 		ElementCount++;
+		
+		xCoord += 100;
+		
 		super.onDrop(context);
 
 	}
@@ -146,15 +161,46 @@ public class CustomImageElementDropControler extends SimpleDropController {
 		super.onLeave(context);
 	}
 
-	public static void setMouseEvent(MouseMoveEvent e) {
-		mouseEvent = e;
-		mouseX = mouseEvent.getX();
-		mouseY = mouseEvent.getY();
-	}
+	public static final ClickHandler clickHandler = new ClickHandler() {
 
-	// var val1 =
-	// this.@com.wso2.jsplumb.client.NoInsertAtEndIndexedDropController::idval(Ljava/lang/String;)(a);
-	// var val2 =
-	// this.@com.wso2.jsplumb.client.NoInsertAtEndIndexedDropController::idval(Ljava/lang/String;)(b);
+		@Override
+		public void onClick(ClickEvent event) {
+			event.preventDefault();
+			selectedWidget = (Widget) event.getSource();
+			myecho(selectedWidget.getElement().getId());
+		}
+	};
+	
+	public static native void myecho(String selectedWid) /*-{
+		$wnd.alert(selectedWid);
+
+	}-*/;
+
+
+	public static final KeyDownHandler keyDownHandler = new KeyDownHandler() {
+
+		@Override
+		public void onKeyDown(KeyDownEvent event) {
+			if (event.getNativeKeyCode() == KeyCodes.KEY_DELETE) {
+
+				deletingWidgetId = selectedWidget.getElement().getId();
+				for (int i = 0; i < widgetMap.size(); i++) {
+					if (widgetMap.get(i) == deletingWidgetId) {
+						if (i != 0) {
+							widgetbeforeDeletingWidget = widgetMap.get(i - 1);
+						}
+						if (i != widgetMap.size()) {
+							widgetafterDeletingWdget = widgetMap.get(i + 1);
+						}
+					}
+				}
+				RootPanel.get(DROPPABLE_PANEL).remove(selectedWidget);
+				if (widgetafterDeletingWdget != null && widgetbeforeDeletingWidget != null) {
+					GWTjsplumbSample.gwtjsPlumbDemo(widgetbeforeDeletingWidget,
+							widgetafterDeletingWdget);
+				}
+			}
+		}
+	};
 
 }

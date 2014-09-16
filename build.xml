@@ -4,7 +4,7 @@
   <property name="gwt.args" value="" />
 
   <!-- Configure path to GWT SDK -->
-  <property name="gwt.sdk" location="/home/susinda/gwt-2.6.1" />
+  <property name="gwt.sdk" location="/opt/GWT/gwt-2.6.1" />
 
   <path id="project.class.path">
     <pathelement location="war/WEB-INF/classes"/>
@@ -39,8 +39,8 @@
       <classpath>
         <pathelement location="src"/>
         <path refid="project.class.path"/>
-        <pathelement location="/home/susinda/gwt-2.6.1/validation-api-1.0.0.GA.jar" />
-        <pathelement location="/home/susinda/gwt-2.6.1/validation-api-1.0.0.GA-sources.jar" />
+        <pathelement location="/opt/GWT/gwt-2.6.1/validation-api-1.0.0.GA.jar" />
+        <pathelement location="/opt/GWT/gwt-2.6.1/validation-api-1.0.0.GA-sources.jar" />
       </classpath>
       <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
       <jvmarg value="-Xmx256M"/>
@@ -57,8 +57,8 @@
       <classpath>
         <pathelement location="src"/>
         <path refid="project.class.path"/>
-        <pathelement location="/home/susinda/gwt-2.6.1/validation-api-1.0.0.GA.jar" />
-        <pathelement location="/home/susinda/gwt-2.6.1/validation-api-1.0.0.GA-sources.jar" />
+        <pathelement location="/opt/GWT/gwt-2.6.1/validation-api-1.0.0.GA.jar" />
+        <pathelement location="/opt/GWT/gwt-2.6.1/validation-api-1.0.0.GA-sources.jar" />
       </classpath>
       <jvmarg value="-Xmx256M"/>
       <arg value="-startupUrl"/>
@@ -77,8 +77,8 @@
         <pathelement location="src"/>
         <pathelement location="/home/susinda/gwt-2.6.1/gwt-codeserver.jar" />
         <path refid="project.class.path"/>
-        <pathelement location="/home/susinda/gwt-2.6.1/validation-api-1.0.0.GA.jar" />
-        <pathelement location="/home/susinda/gwt-2.6.1/validation-api-1.0.0.GA-sources.jar" />
+        <pathelement location="/opt/GWT/gwt-2.6.1/validation-api-1.0.0.GA.jar" />
+        <pathelement location="/opt/GWT/gwt-2.6.1/validation-api-1.0.0.GA-sources.jar" />
       </classpath>
       <jvmarg value="-Xmx256M"/>
       <arg value="com.wso2.jsplumb.GWTjsplumbSample"/>

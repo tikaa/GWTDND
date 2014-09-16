@@ -7,6 +7,10 @@ public enum Mediator {
    SEND,
    DROP, 
    CLONE,
-   STORE
+   STORE,
+   CALLTEMPLATE,
+   THROTTLE,
+   PAYLOADFACTORY,
+   RESPOND
    
 }
