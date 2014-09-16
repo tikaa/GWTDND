@@ -82,6 +82,7 @@ public class GWTjsplumbSample implements EntryPoint {
 		Image propertyImage = MediatorCreator.getMediatorByName(Mediator.PROPERTY);
 		draggablePanel.add(propertyImage);
 		draggableWidgetList.add(propertyImage);
+		droppablePanel.addKeyDownHandler(CustomImageElementDropControler.keyDownHandler);
 
 		backgroundPanel.add(draggablePanel);
 		backgroundPanel.add(droppablePanel);
@@ -89,11 +90,10 @@ public class GWTjsplumbSample implements EntryPoint {
 		RootPanel.get().add(backgroundPanel);
 
 		/* DRAG AND DROP */
-		RootPanel.get(BACKGROUND).getElement().getStyle().setProperty(STYLE_POSITION, POSITION_RELATIVE);
-
+		RootPanel.get(BACKGROUND).getElement().getStyle()
+				.setProperty(STYLE_POSITION, POSITION_RELATIVE);
 		CustomImageElementDragController dragController = new CustomImageElementDragController(
 				RootPanel.get(BACKGROUND), true);
-
 		CustomImageElementDropControler widgetDropController = new CustomImageElementDropControler(
 				backgroundPanel, this);
 		dragController.registerDropController(widgetDropController);
@@ -102,10 +102,8 @@ public class GWTjsplumbSample implements EntryPoint {
 		 * making the widgets draggable
 		 */
 		for (Image draggableImage : draggableWidgetList) {
-
 			dragController.makeDraggable(draggableImage);
 		}
-
 		ScriptInjectorHelper.injectScript();
 
 	}
@@ -120,5 +118,5 @@ public class GWTjsplumbSample implements EntryPoint {
 		$wnd.gwtjsplumbdemo(prevElem, currElem);
 
 	}-*/;
-	
+
 }

@@ -21,31 +21,31 @@ import com.wso2.jsplumb.client.MediatorCreator;
 
 public class CustomImageElementDropControler extends SimpleDropController {
 
-	private static final String DROPPABLE_PANEL = "droppablePanel"; //$NON-NLS-1$
-	private static final String DRAGGABLE_PANEL = "draggablePanel"; //$NON-NLS-1$
-	private static final String PAYLFAC_MEDIATOR = "paylfacMediator"; //$NON-NLS-1$
-	private static final String PROPERTY_MEDIATOR = "propertyMediator"; //$NON-NLS-1$
-	private static final String RESPOND_MEDIATOR = "respondMediator"; //$NON-NLS-1$
-	private static final String THROTTLE_MEDIATOR = "throttleMediator"; //$NON-NLS-1$
-	private static final String CLONE_MEDIATOR = "cloneMediator"; //$NON-NLS-1$
-	private static final String SEND_MEDIATOR = "sendMediator"; //$NON-NLS-1$
-	private static final String STORE_MEDIATOR = "storeMediator"; //$NON-NLS-1$
-	private static final String DROP_MEDIATOR = "dropMediator"; //$NON-NLS-1$
-	private static final String LOG_MEDIATOR = "logMediator"; //$NON-NLS-1$
-	private static final String CALL_TEMPLATE_MEDIATOR = "callTemplateMediator"; //$NON-NLS-1$
-	private static final String CALL_MEDIATOR = "callMediator"; //$NON-NLS-1$
-	private static final String BACKGROUND = "background"; //$NON-NLS-1$
-	private static final String DRAGGED = "dragged"; //$NON-NLS-1$
+	private static final String DROPPABLE_PANEL = "droppablePanel";
+	private static final String DRAGGABLE_PANEL = "draggablePanel";
+	private static final String PAYLFAC_MEDIATOR = "paylfacMediator";
+	private static final String PROPERTY_MEDIATOR = "propertyMediator";
+	private static final String RESPOND_MEDIATOR = "respondMediator";
+	private static final String THROTTLE_MEDIATOR = "throttleMediator";
+	private static final String CLONE_MEDIATOR = "cloneMediator";
+	private static final String SEND_MEDIATOR = "sendMediator";
+	private static final String STORE_MEDIATOR = "storeMediator";
+	private static final String DROP_MEDIATOR = "dropMediator";
+	private static final String LOG_MEDIATOR = "logMediator";
+	private static final String CALL_TEMPLATE_MEDIATOR = "callTemplateMediator";
+	private static final String CALL_MEDIATOR = "callMediator";
+	private static final String BACKGROUND = "background";
+	private static final String DRAGGED = "dragged";
 
-	private static final String DROPPABLE_IMAGE_STYLE = "gwt-Image dragdrop-draggable dragdrop-handle"; //$NON-NLS-1$
-	private static final String DROPPING_IMAGE_STYLE = "gwt-Image dragdrop-draggable dragdrop-handle dragdrop-dragging"; //$NON-NLS-1$
+	private static final String DROPPABLE_IMAGE_STYLE = "gwt-Image dragdrop-draggable dragdrop-handle";
+	private static final String DROPPING_IMAGE_STYLE = "gwt-Image dragdrop-draggable dragdrop-handle dragdrop-dragging";
 
 	private final static Logger LOGGER = Logger.getLogger(CustomImageElementDropControler.class
 			.getName());
 
 	int ElementCount = 1;
-	int xCoord = 50;
-	int yCoord = 100;
+	int droppedElemxCoord = 50;
+	int droppedElemyCoord = 100;
 
 	public Image newDroppedElem;
 	static Widget selectedWidget = new Widget();
@@ -62,7 +62,6 @@ public class CustomImageElementDropControler extends SimpleDropController {
 	@Override
 	public void onDrop(DragContext context) {
 
-		
 		String thisId = null;
 		for (Widget widget : context.selectedWidgets) {
 
@@ -125,30 +124,29 @@ public class CustomImageElementDropControler extends SimpleDropController {
 					}
 					newDroppedElem.getElement().setId(newDroppedElemId);
 					RootPanel.get(DROPPABLE_PANEL).add(newDroppedElem);
-					RootPanel.get(DROPPABLE_PANEL)
-							.setWidgetPosition(newDroppedElem, xCoord, yCoord);
+					RootPanel.get(DROPPABLE_PANEL).setWidgetPosition(newDroppedElem,
+							droppedElemxCoord, droppedElemyCoord);
 					widgetMap.put(ElementCount, newDroppedElem.getElement().getId());
 					newDroppedElem = null;
 					RootPanel.get(BACKGROUND).getAbsoluteLeft();
 				} else {
-					LOGGER.log(Level.INFO, Messages.getString("CustomImageElementDropControler.0")); //$NON-NLS-1$
+					LOGGER.log(Level.INFO, "the draggable and droppable panels returned null"); //$tried externalization, have to 
+																								//send an http request to the server in GWT
 				}
 			} else {
-				LOGGER.log(Level.INFO, Messages.getString("CustomImageElementDropControler.18")); //$NON-NLS-1$
+				LOGGER.log(Level.INFO, "no widget selected, widget is null"); //$tried externalization, 
+				                                                              //have to send an http request to the server in GWT
 			}
 
 		}
-
 		int PrevCount = ElementCount - 1;
 		String prevElem = widgetMap.get(PrevCount);
 		String currElem = widgetMap.get(ElementCount);
 		GWTjsplumbSample.gwtjsPlumbDemo(prevElem, currElem, ElementCount);
 		ElementCount++;
-		
-		xCoord += 100;
-		
-		super.onDrop(context);
 
+		droppedElemxCoord += 100;
+		super.onDrop(context);
 	}
 
 	@Override
@@ -170,12 +168,11 @@ public class CustomImageElementDropControler extends SimpleDropController {
 			myecho(selectedWidget.getElement().getId());
 		}
 	};
-	
+
 	public static native void myecho(String selectedWid) /*-{
 		$wnd.alert(selectedWid);
 
 	}-*/;
-
 
 	public static final KeyDownHandler keyDownHandler = new KeyDownHandler() {
 

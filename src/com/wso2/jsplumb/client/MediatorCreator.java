@@ -11,8 +11,8 @@ import com.wso2.jsplumb.client.injectors.JsClientBundle;
 
 public class MediatorCreator {
 
-	private static final String DRAGGABLE = "draggable"; //$NON-NLS-1$
-	private static final String MEDIATOR = "Mediator"; //$NON-NLS-1$
+	private static final String DRAGGABLE = "draggable"; 
+	private static final String MEDIATOR = "Mediator"; 
 
 	public static ImageResource getImage(Mediator mediator) {
 
@@ -66,8 +66,7 @@ public class MediatorCreator {
 
 		default:
 			imageResource = JsClientBundle.INSTANCE.LogImage();
-			LOGGER.log(Level.WARNING,
-					Messages.getString("MediatorCreator.2")); //$NON-NLS-1$
+			LOGGER.log(Level.WARNING, "the image resource could not be found for the given mediator"); //tried externalization, have to send an http request to the server in GWT
 			break;
 
 		}
