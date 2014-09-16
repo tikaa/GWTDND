@@ -16,11 +16,12 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.wso2.jsplumb.client.controllers.CustomImageElementDragController;
+import com.wso2.jsplumb.client.controllers.CustomImageElementDropControler;
 import com.wso2.jsplumb.client.controllers.NoInsertAtEndIndexedDropController;
-import com.wso2.jsplumb.client.controllers.PreventRemovalDragController;
 import com.wso2.jsplumb.client.extendedpanels.ExtendedHorizontalPanel;
-import com.wso2.jsplumb.client.injectors.ScriptInject;
-import com.wso2.jsplumb.client.injectors.jsClientBundle;
+import com.wso2.jsplumb.client.injectors.ScriptInjectorHelper;
+import com.wso2.jsplumb.client.injectors.JsClientBundle;
 
 //import static com.google.gwt.query.client.GQuery.$;
 
@@ -29,17 +30,17 @@ import com.wso2.jsplumb.client.injectors.jsClientBundle;
  */
 public class GWTjsplumbSample implements EntryPoint {
 
-	private ImageResource CallImage = jsClientBundle.INSTANCE.CallImage();
-	private ImageResource CallTempImage = jsClientBundle.INSTANCE.CalleTempImage();
-	private ImageResource LogImage = jsClientBundle.INSTANCE.LogImage();
-	private ImageResource DropImage = jsClientBundle.INSTANCE.DropImage();
-	private ImageResource StoreImage = jsClientBundle.INSTANCE.StoreImage();
-	private ImageResource ThrottleImage = jsClientBundle.INSTANCE.ThrottleImage();
-	private ImageResource SendImage = jsClientBundle.INSTANCE.SendImage();
-	private ImageResource PayloadFactoryImage = jsClientBundle.INSTANCE.PayloadFactoryImage();
-	private ImageResource RespondImage = jsClientBundle.INSTANCE.RespondImage();
-	private ImageResource CloneImage = jsClientBundle.INSTANCE.CloneImage();
-	private ImageResource PropertyImage = jsClientBundle.INSTANCE.PropertyImage();
+	private ImageResource CallImage = JsClientBundle.INSTANCE.CallImage();
+	private ImageResource CallTempImage = JsClientBundle.INSTANCE.CalleTempImage();
+	private ImageResource LogImage = JsClientBundle.INSTANCE.LogImage();
+	private ImageResource DropImage = JsClientBundle.INSTANCE.DropImage();
+	private ImageResource StoreImage = JsClientBundle.INSTANCE.StoreImage();
+	private ImageResource ThrottleImage = JsClientBundle.INSTANCE.ThrottleImage();
+	private ImageResource SendImage = JsClientBundle.INSTANCE.SendImage();
+	private ImageResource PayloadFactoryImage = JsClientBundle.INSTANCE.PayloadFactoryImage();
+	private ImageResource RespondImage = JsClientBundle.INSTANCE.RespondImage();
+	private ImageResource CloneImage = JsClientBundle.INSTANCE.CloneImage();
+	private ImageResource PropertyImage = JsClientBundle.INSTANCE.PropertyImage();
 	public static HorizontalPanel backgroundPanel = new HorizontalPanel();
 
 	public static VerticalPanel draggablePanel = new VerticalPanel();
@@ -146,11 +147,11 @@ public class GWTjsplumbSample implements EntryPoint {
 		 */
 		RootPanel.get("background").getElement().getStyle().setProperty("position", "relative");
 
-		PreventRemovalDragController dragController = new PreventRemovalDragController(
-				RootPanel.get("background"), true);
+		CustomImageElementDragController dragController = new CustomImageElementDragController(
+				RootPanel.get("droppablePanel"), true);
 
-		NoInsertAtEndIndexedDropController widgetDropController = new NoInsertAtEndIndexedDropController(
-				backgroundPanel, this);
+		CustomImageElementDropControler widgetDropController = new CustomImageElementDropControler(
+				droppablePanel, this);
 		dragController.registerDropController(widgetDropController);
 
 		/*
@@ -168,7 +169,7 @@ public class GWTjsplumbSample implements EntryPoint {
 		dragController.makeDraggable(payloadfactoryimage);
 		dragController.makeDraggable(cloneimage);
 
-		ScriptInject.injectScript();
+		ScriptInjectorHelper.injectScript();
 
 		gwtjsPlumbDemo("you", "me", 0);
 

@@ -4,11 +4,11 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.TextResource;
-import com.google.gwt.resources.client.ClientBundle.Source;
 
 
-public  interface jsClientBundle extends ClientBundle {
-    jsClientBundle INSTANCE = GWT.create(jsClientBundle.class);
+
+public  interface JsClientBundle extends ClientBundle {
+    JsClientBundle INSTANCE = GWT.create(JsClientBundle.class);
 
     @Source("com/wso2/jsplumb/client/scripts/jquery.min.js")
     TextResource jquerysource();
@@ -21,8 +21,6 @@ public  interface jsClientBundle extends ClientBundle {
 
     @Source("com/wso2/jsplumb/client/scripts/gwtjsplumbdemo.js")
     TextResource gwtresource();
-
-   
 
     @Source("icons/Call.gif")
     ImageResource CallImage();
