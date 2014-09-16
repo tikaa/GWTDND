@@ -9,7 +9,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
-import com.google.gwt.query.client.GQuery;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -31,20 +30,16 @@ import com.wso2.jsplumb.client.injectors.jsClientBundle;
 public class GWTjsplumbSample implements EntryPoint {
 
 	private ImageResource CallImage = jsClientBundle.INSTANCE.CallImage();
-	private ImageResource CallTempImage = jsClientBundle.INSTANCE
-			.CalleTempImage();
+	private ImageResource CallTempImage = jsClientBundle.INSTANCE.CalleTempImage();
 	private ImageResource LogImage = jsClientBundle.INSTANCE.LogImage();
 	private ImageResource DropImage = jsClientBundle.INSTANCE.DropImage();
 	private ImageResource StoreImage = jsClientBundle.INSTANCE.StoreImage();
-	private ImageResource ThrottleImage = jsClientBundle.INSTANCE
-			.ThrottleImage();
+	private ImageResource ThrottleImage = jsClientBundle.INSTANCE.ThrottleImage();
 	private ImageResource SendImage = jsClientBundle.INSTANCE.SendImage();
-	private ImageResource PayloadFactoryImage = jsClientBundle.INSTANCE
-			.PayloadFactoryImage();
+	private ImageResource PayloadFactoryImage = jsClientBundle.INSTANCE.PayloadFactoryImage();
 	private ImageResource RespondImage = jsClientBundle.INSTANCE.RespondImage();
 	private ImageResource CloneImage = jsClientBundle.INSTANCE.CloneImage();
-	private ImageResource PropertyImage = jsClientBundle.INSTANCE
-			.PropertyImage();
+	private ImageResource PropertyImage = jsClientBundle.INSTANCE.PropertyImage();
 	public static HorizontalPanel backgroundPanel = new HorizontalPanel();
 
 	public static VerticalPanel draggablePanel = new VerticalPanel();
@@ -72,6 +67,7 @@ public class GWTjsplumbSample implements EntryPoint {
 	private Image propertyimage = new Image();
 
 	public void onModuleLoad() {
+
 		/* Create the GWT widgets */
 
 		backgroundPanel.getElement().setId("background");
@@ -79,13 +75,11 @@ public class GWTjsplumbSample implements EntryPoint {
 		draggablePanel.setPixelSize(150, 1000);
 		droppablePanel.getElement().setId("droppablePanel");
 
-		draggablePanel.getElement().setClassName("window");
-		droppablePanel.getElement().setClassName("window");
+		draggablePanel.getElement().setClassName("mainwindow");
+		droppablePanel.getElement().setClassName("mainwindow");
 		droppablePanel.setPixelSize(1400, 1000);
-		droppablePanel.getElement().getStyle()
-				.setProperty("position", "relative");
-		draggablePanel.getElement().getStyle()
-				.setProperty("position", "relative");
+		droppablePanel.getElement().getStyle().setProperty("position", "relative");
+		draggablePanel.getElement().getStyle().setProperty("position", "relative");
 
 		callimage.getElement().setId("callMediator");
 		callimage.setResource(CallImage);
@@ -136,7 +130,7 @@ public class GWTjsplumbSample implements EntryPoint {
 		cloneimage.setResource(CloneImage);
 		cloneimage.addClickHandler(clickHandler);
 		draggablePanel.add(cloneimage);
-		 //droppablePanel.addKeyDownHandler(keyDownHandler);
+		// droppablePanel.addKeyDownHandler(keyDownHandler);
 		propertyimage.getElement().setId("propertyMediator");
 		propertyimage.setResource(PropertyImage);
 		propertyimage.addClickHandler(clickHandler);
@@ -147,13 +141,11 @@ public class GWTjsplumbSample implements EntryPoint {
 
 		RootPanel.get().add(backgroundPanel);
 
-		// RootPanel.get("window2").setPixelSize(1000, 1100);
-
 		/*
 		 * DRAG AND DROP
 		 */
 		RootPanel.get("background").getElement().getStyle().setProperty("position", "relative");
-		
+
 		PreventRemovalDragController dragController = new PreventRemovalDragController(
 				RootPanel.get("background"), true);
 
@@ -162,7 +154,7 @@ public class GWTjsplumbSample implements EntryPoint {
 		dragController.registerDropController(widgetDropController);
 
 		/*
-		 * Trying to make droppable and draggable
+		 * making the widgets droppable and draggable
 		 */
 		dragController.makeDraggable(callimage);
 		dragController.makeDraggable(calltempimage);
@@ -192,32 +184,33 @@ public class GWTjsplumbSample implements EntryPoint {
 
 		}
 	};
-	
+
 	public static final KeyDownHandler keyDownHandler = new KeyDownHandler() {
-		
+
 		@Override
 		public void onKeyDown(KeyDownEvent event) {
-			 if (event.getNativeKeyCode() == KeyCodes.KEY_DELETE) {
-				 myecho(selectedWidget.getElement().getId());
-				  deletingWidgetId = selectedWidget.getElement().getId();
-				   for(int i=0;i<WidgetMap.size();i++){
-					   if(WidgetMap.get(i)==deletingWidgetId){
-						   if(i!=0){
-						   widgetbeforeDeletingWidget = WidgetMap.get(i-1);}
-						   if(i!=WidgetMap.size()){
-						   WidgetafterDeletingWdget = WidgetMap.get(i+1);}
-					   }
-				   }
-				   droppablePanel.remove(selectedWidget);
-	           	if(WidgetafterDeletingWdget!=null && widgetbeforeDeletingWidget!=null){
-	           		gwtjsPlumbDemo(widgetbeforeDeletingWidget,WidgetafterDeletingWdget,2);
-	           	}
-	           }
+			if (event.getNativeKeyCode() == KeyCodes.KEY_DELETE) {
+				myecho(selectedWidget.getElement().getId());
+				deletingWidgetId = selectedWidget.getElement().getId();
+				for (int i = 0; i < WidgetMap.size(); i++) {
+					if (WidgetMap.get(i) == deletingWidgetId) {
+						if (i != 0) {
+							widgetbeforeDeletingWidget = WidgetMap.get(i - 1);
+						}
+						if (i != WidgetMap.size()) {
+							WidgetafterDeletingWdget = WidgetMap.get(i + 1);
+						}
+					}
+				}
+				droppablePanel.remove(selectedWidget);
+				if (WidgetafterDeletingWdget != null && widgetbeforeDeletingWidget != null) {
+					gwtjsPlumbDemo(widgetbeforeDeletingWidget, WidgetafterDeletingWdget, 2);
+				}
+			}
 		}
 	};
 
-	public static native void gwtjsPlumbDemo(String prevElem, String currElem,
-			int ElemCount) /*-{
+	public static native void gwtjsPlumbDemo(String prevElem, String currElem, int ElemCount) /*-{
 		//var countElem =this.@com.wso2.jsplumb.client.NoInsertAtEndIndexedDropController::ElementCount;
 		$wnd.alert(prevElem);
 		$wnd.alert(currElem);
@@ -228,10 +221,7 @@ public class GWTjsplumbSample implements EntryPoint {
 
 	public static native void myecho(String selectedWid) /*-{
 		$wnd.alert(selectedWid);
-		
 
 	}-*/;
-	
-	
 
 }
