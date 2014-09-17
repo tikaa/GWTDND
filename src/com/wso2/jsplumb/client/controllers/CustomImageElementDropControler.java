@@ -1,17 +1,28 @@
+/* Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.wso2.jsplumb.client.controllers;
 
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.drop.SimpleDropController;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -38,87 +49,78 @@ public class CustomImageElementDropControler extends SimpleDropController {
 	private static final String DRAGGED = "dragged";
 
 	private static final String DROPPABLE_IMAGE_STYLE = "gwt-Image dragdrop-draggable dragdrop-handle";
-	private static final String DROPPING_IMAGE_STYLE = "gwt-Image dragdrop-draggable dragdrop-handle dragdrop-dragging";
+	private static final String DROPPING_IMAGE_STYLE = "gwt-Image dragdrop-draggable dragdrop-handle dragdrop-dragging";	
 
-	private final static Logger LOGGER = Logger.getLogger(CustomImageElementDropControler.class
-			.getName());
+	private int elementCount = 0; // count of dropped elements in the droppable panel
+	private int droppedElemxCoord = 50; //coordinates for the dropped element
+	private int droppedElemyCoord = 100;
 
-	int ElementCount = 1;
-	int droppedElemxCoord = 50;
-	int droppedElemyCoord = 100;
-
-	public Image newDroppedElem;
-	static Widget selectedWidget = new Widget();
-	public static HashMap<Integer, String> widgetMap = new HashMap<>();
-
-	static String deletingWidgetId = null;
-	static String widgetbeforeDeletingWidget = null;
-	static String widgetafterDeletingWdget = null;
+	private Image newDroppedElem;
+	private static Widget selectedWidget;
+	private Map<Integer, String> widgetMap;	
 
 	public CustomImageElementDropControler(Widget dropTarget, EntryPoint newEntrypoint) {
 		super(dropTarget);
+		widgetMap = new HashMap<Integer, String>();
 	}
 
 	@Override
-	public void onDrop(DragContext context) {
-
-		String thisId = null;
+	public void onDrop(DragContext context) { // on widget dropping 		
 		for (Widget widget : context.selectedWidgets) {
-
 			if (widget != null) {
-
-				thisId = widget.getElement().getId();
-				String newDroppedElemId = DRAGGED + thisId + ElementCount;
-
+				String droppedElemId = widget.getElement().getId();
+				String newDroppedElemId = DRAGGED + droppedElemId + elementCount;
+				// removing the GWT dropping widget styles and add Droppable styles and move it to droppable panel
 				widget.removeStyleName(DROPPING_IMAGE_STYLE);
-				widget.addStyleName(DROPPABLE_IMAGE_STYLE);
-				RootPanel.get(DRAGGABLE_PANEL).add(widget);
-				RootPanel.get(DROPPABLE_PANEL).remove(widget);
-
+				widget.addStyleName(DROPPABLE_IMAGE_STYLE);				
+				
 				if (RootPanel.get(DRAGGABLE_PANEL) != null
 						&& RootPanel.get(DROPPABLE_PANEL) != null) {
+					
+					RootPanel.get(DRAGGABLE_PANEL).add(widget); // add a clone to the draggable panel
+					RootPanel.get(DROPPABLE_PANEL).remove(widget); // remove the default dropped element to the droppable panel
 
-					if (thisId.equalsIgnoreCase(CALL_MEDIATOR)) {
+					if (droppedElemId.equalsIgnoreCase(CALL_MEDIATOR)) {
 						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.CALL,
 								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase(CALL_TEMPLATE_MEDIATOR)) {
+					else if (droppedElemId.equalsIgnoreCase(CALL_TEMPLATE_MEDIATOR)) {
 						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.CALLTEMPLATE,
 								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase(LOG_MEDIATOR)) {
+					else if (droppedElemId.equalsIgnoreCase(LOG_MEDIATOR)) {
 						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.LOG,
 								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase(DROP_MEDIATOR)) {
+					else if (droppedElemId.equalsIgnoreCase(DROP_MEDIATOR)) {
 						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.DROP,
 								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase(STORE_MEDIATOR)) {
+					else if (droppedElemId.equalsIgnoreCase(STORE_MEDIATOR)) {
 						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.STORE,
 								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase(SEND_MEDIATOR)) {
+					else if (droppedElemId.equalsIgnoreCase(SEND_MEDIATOR)) {
 						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.SEND,
 								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase(CLONE_MEDIATOR)) {
+					if (droppedElemId.equalsIgnoreCase(CLONE_MEDIATOR)) {
 						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.CLONE,
 								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase(THROTTLE_MEDIATOR)) {
+					else if (droppedElemId.equalsIgnoreCase(THROTTLE_MEDIATOR)) {
 						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.THROTTLE,
 								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase(RESPOND_MEDIATOR)) {
+					else if (droppedElemId.equalsIgnoreCase(RESPOND_MEDIATOR)) {
 						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.RESPOND,
 								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase(PROPERTY_MEDIATOR)) {
+					else if (droppedElemId.equalsIgnoreCase(PROPERTY_MEDIATOR)) {
 						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.PROPERTY,
 								clickHandler);
 					}
-					if (thisId.equalsIgnoreCase(PAYLFAC_MEDIATOR)) {
+					else if (droppedElemId.equalsIgnoreCase(PAYLFAC_MEDIATOR)) {
 						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.PAYLOADFACTORY,
 								clickHandler);
 					}
@@ -126,26 +128,21 @@ public class CustomImageElementDropControler extends SimpleDropController {
 					RootPanel.get(DROPPABLE_PANEL).add(newDroppedElem);
 					RootPanel.get(DROPPABLE_PANEL).setWidgetPosition(newDroppedElem,
 							droppedElemxCoord, droppedElemyCoord);
-					widgetMap.put(ElementCount, newDroppedElem.getElement().getId());
-					newDroppedElem = null;
+					//generate a map of the dropped elements
+					widgetMap.put(elementCount, newDroppedElem.getElement().getId());
+					newDroppedElem = null; 
 					RootPanel.get(BACKGROUND).getAbsoluteLeft();
-				} else {
-					LOGGER.log(Level.INFO, "the draggable and droppable panels returned null"); //$tried externalization, have to 
-																								//send an http request to the server in GWT
 				}
-			} else {
-				LOGGER.log(Level.INFO, "no widget selected, widget is null"); //$tried externalization, 
-				                                                              //have to send an http request to the server in GWT
 			}
-
 		}
-		int PrevCount = ElementCount - 1;
+		//to connect the widgets on drop with the previously dropped widget
+		int PrevCount = elementCount - 1;
 		String prevElem = widgetMap.get(PrevCount);
-		String currElem = widgetMap.get(ElementCount);
-		GWTjsplumbSample.gwtjsPlumbDemo(prevElem, currElem, ElementCount);
-		ElementCount++;
+		String currElem = widgetMap.get(elementCount);
+		GWTjsplumbSample.gwtjsPlumbDemo(prevElem, currElem, elementCount);
+		elementCount++;
 
-		droppedElemxCoord += 100;
+		droppedElemxCoord += 100; // increment the dropping coordinates of the dropped elements by 100px
 		super.onDrop(context);
 	}
 
@@ -165,39 +162,6 @@ public class CustomImageElementDropControler extends SimpleDropController {
 		public void onClick(ClickEvent event) {
 			event.preventDefault();
 			selectedWidget = (Widget) event.getSource();
-			myecho(selectedWidget.getElement().getId());
 		}
 	};
-
-	public static native void myecho(String selectedWid) /*-{
-		$wnd.alert(selectedWid);
-
-	}-*/;
-
-	public static final KeyDownHandler keyDownHandler = new KeyDownHandler() {
-
-		@Override
-		public void onKeyDown(KeyDownEvent event) {
-			if (event.getNativeKeyCode() == KeyCodes.KEY_DELETE) {
-
-				deletingWidgetId = selectedWidget.getElement().getId();
-				for (int i = 0; i < widgetMap.size(); i++) {
-					if (widgetMap.get(i) == deletingWidgetId) {
-						if (i != 0) {
-							widgetbeforeDeletingWidget = widgetMap.get(i - 1);
-						}
-						if (i != widgetMap.size()) {
-							widgetafterDeletingWdget = widgetMap.get(i + 1);
-						}
-					}
-				}
-				RootPanel.get(DROPPABLE_PANEL).remove(selectedWidget);
-				if (widgetafterDeletingWdget != null && widgetbeforeDeletingWidget != null) {
-					GWTjsplumbSample.gwtjsPlumbDemo(widgetbeforeDeletingWidget,
-							widgetafterDeletingWdget);
-				}
-			}
-		}
-	};
-
 }
