@@ -5,7 +5,7 @@ function gwtjsplumbdemo(prevElem, currElem) {
 		jsPlumb.connect({
 			source : prevElem,
 			target : currElem,
-			anchors : [ "Right", "Left" ],
+			anchors : [ "Bottom", "Top" ],
 			paintStyle : {
 				strokeStyle : "#3366FF",
 				lineWidth : 1

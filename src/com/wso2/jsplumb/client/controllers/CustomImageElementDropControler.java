@@ -32,6 +32,7 @@ import com.wso2.jsplumb.client.MediatorCreator;
 
 public class CustomImageElementDropControler extends SimpleDropController {
 
+	private static final int yCoordinateIncrement = 100;
 	private static final String DROPPABLE_PANEL = "droppablePanel";
 	private static final String DRAGGABLE_PANEL = "draggablePanel";
 	private static final String PAYLFAC_MEDIATOR = "paylfacMediator";
@@ -52,10 +53,10 @@ public class CustomImageElementDropControler extends SimpleDropController {
 	private static final String DROPPING_IMAGE_STYLE = "gwt-Image dragdrop-draggable dragdrop-handle dragdrop-dragging";	
 
 	private int elementCount = 0; // count of dropped elements in the droppable panel
-	private int droppedElemxCoord = 50; //coordinates for the dropped element
-	private int droppedElemyCoord = 100;
+	private int droppedElemxCoord = 100; //coordinates for the dropped element
+	private int droppedElemyCoord = 50;
 
-	private Image newDroppedElem;
+	private Image newDroppedElem;	
 	private static Widget selectedWidget;
 	private Map<Integer, String> widgetMap;	
 
@@ -70,15 +71,22 @@ public class CustomImageElementDropControler extends SimpleDropController {
 			if (widget != null) {
 				String droppedElemId = widget.getElement().getId();
 				String newDroppedElemId = DRAGGED + droppedElemId + elementCount;
-				// removing the GWT dropping widget styles and add Droppable styles and move it to droppable panel
-				widget.removeStyleName(DROPPING_IMAGE_STYLE);
-				widget.addStyleName(DROPPABLE_IMAGE_STYLE);				
+				// removing the GWT dropping widget styles and add Droppable styles and move it to droppable panel					
+				widget.getElement().removeClassName(DROPPING_IMAGE_STYLE);
+				widget.getElement().addClassName(DROPPABLE_IMAGE_STYLE);
 				
 				if (RootPanel.get(DRAGGABLE_PANEL) != null
-						&& RootPanel.get(DROPPABLE_PANEL) != null) {
+						&& RootPanel.get(DROPPABLE_PANEL) != null) {//(mediator.toString().toLowerCase() + MEDIATOR);
 					
 					RootPanel.get(DRAGGABLE_PANEL).add(widget); // add a clone to the draggable panel
 					RootPanel.get(DROPPABLE_PANEL).remove(widget); // remove the default dropped element to the droppable panel
+					/*	
+					 for (Mediator newDroppedMediator : Mediator.values()) {
+					        if (newDroppedMediator.name().equals(droppedElemId.toUpperCase())) {
+					        	newDroppedElem = MediatorCreator.getMediatorByName(newDroppedMediator,
+										clickHandler);
+					        }
+					    }*/
 
 					if (droppedElemId.equalsIgnoreCase(CALL_MEDIATOR)) {
 						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.CALL,
@@ -104,7 +112,7 @@ public class CustomImageElementDropControler extends SimpleDropController {
 						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.SEND,
 								clickHandler);
 					}
-					if (droppedElemId.equalsIgnoreCase(CLONE_MEDIATOR)) {
+					else if (droppedElemId.equalsIgnoreCase(CLONE_MEDIATOR)) {
 						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.CLONE,
 								clickHandler);
 					}
@@ -122,10 +130,10 @@ public class CustomImageElementDropControler extends SimpleDropController {
 					}
 					else if (droppedElemId.equalsIgnoreCase(PAYLFAC_MEDIATOR)) {
 						newDroppedElem = MediatorCreator.getMediatorByName(Mediator.PAYLOADFACTORY,
-								clickHandler);
+								clickHandler);						
 					}
 					newDroppedElem.getElement().setId(newDroppedElemId);
-					RootPanel.get(DROPPABLE_PANEL).add(newDroppedElem);
+					RootPanel.get(DROPPABLE_PANEL).add(newDroppedElem);					
 					RootPanel.get(DROPPABLE_PANEL).setWidgetPosition(newDroppedElem,
 							droppedElemxCoord, droppedElemyCoord);
 					//generate a map of the dropped elements
@@ -142,7 +150,7 @@ public class CustomImageElementDropControler extends SimpleDropController {
 		GWTjsplumbSample.gwtjsPlumbDemo(prevElem, currElem, elementCount);
 		elementCount++;
 
-		droppedElemxCoord += 100; // increment the dropping coordinates of the dropped elements by 100px
+		droppedElemyCoord += yCoordinateIncrement; // increment the dropping coordinates of the dropped elements by 100px
 		super.onDrop(context);
 	}
 
@@ -162,6 +170,7 @@ public class CustomImageElementDropControler extends SimpleDropController {
 		public void onClick(ClickEvent event) {
 			event.preventDefault();
 			selectedWidget = (Widget) event.getSource();
+			GWTjsplumbSample.echo(selectedWidget.getElement().getId());
 		}
 	};
 }

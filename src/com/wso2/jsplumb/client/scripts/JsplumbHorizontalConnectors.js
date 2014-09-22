@@ -1,11 +1,11 @@
-function gwtjsplumbdemo(prevElem, currElem) {
+function jsplumbhorizontalconnect(prevElem, currElem) {
 
 	jsPlumb.bind("ready", function() {
 
 		jsPlumb.connect({
 			source : prevElem,
 			target : currElem,
-			anchors : [ "Bottom", "Top" ],
+			anchors : [ "Right", "Left" ],
 			paintStyle : {
 				strokeStyle : "#3366FF",
 				lineWidth : 1

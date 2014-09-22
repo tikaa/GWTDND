@@ -28,12 +28,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 // this is extended becuase we need to add key down handler in the horizontal panel
-public class ExtendedHorizontalPanel extends Composite implements HasWidgets, HasAllKeyHandlers {
+public class ExtendedVerticalPanel extends Composite implements HasWidgets, HasAllKeyHandlers {
 
 	private VerticalPanel fVerticalPanel;
 	private FocusPanel fFocusPanel;
 
-	public ExtendedHorizontalPanel() {
+	public ExtendedVerticalPanel() {
 		fVerticalPanel = new VerticalPanel();
 		fFocusPanel = new FocusPanel();
 		fFocusPanel.setWidget(fVerticalPanel);
